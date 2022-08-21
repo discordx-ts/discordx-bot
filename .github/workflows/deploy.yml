@@ -41,3 +41,9 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SCRIPT_PATH: ${{ secrets.SCRIPT_PATH }}
+
+      - name: Alert
+        run: |
+          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`bot_discordx\` [deployed](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) successfully :tada:\"}" $DISCORD_WEBHOOK
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}

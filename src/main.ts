@@ -51,6 +51,11 @@ bot.once("ready", async () => {
   //  );
 
   console.log("Bot started");
+
+  // set bot activity
+  if (bot.user) {
+    bot.user.setActivity("discordx.js.org");
+  }
 });
 
 bot.on("interactionCreate", (interaction: Interaction) => {
