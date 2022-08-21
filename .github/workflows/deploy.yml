@@ -23,7 +23,7 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
       - name: Run script
-        run: ssh -oStrictHostKeyChecking=no -i key.pem $SSH_HOST $SCRIPT_PATH
+        run: ssh -oStrictHostKeyChecking=no -i key.pem $SSH_HOST $SCRIPT_PATH &> /dev/null
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SCRIPT_PATH: ${{ secrets.SCRIPT_PATH }}
