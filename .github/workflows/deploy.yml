@@ -1,0 +1,29 @@
+name: Deploy
+
+# Only trigger, when the build workflow succeeded
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out code 🛎
+        uses: actions/checkout@v2
+
+      - name: Save ssh key
+        run: |
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > key.pem
+          chmod 400 key.pem
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: Run script
+        run: ssh -oStrictHostKeyChecking=no -i key.pem $SSH_HOST $SCRIPT_PATH
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SCRIPT_PATH: ${{ secrets.SCRIPT_PATH }}
