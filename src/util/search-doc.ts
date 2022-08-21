@@ -100,7 +100,7 @@ export async function SearchDoc(input: string): Promise<IDocResults[]> {
       {
         requests: [
           {
-            indexName: "discord.ts",
+            indexName: "discordx",
             query: input,
           },
         ],
