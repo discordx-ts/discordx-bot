@@ -2,17 +2,18 @@
   "name": "discordx-bot",
   "version": "1.0.0",
   "private": true,
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "build/main.js",
   "scripts": {
     "build": "tsc",
     "build:changelog": "npx @discordx/changelog --root=src",
     "dev": "ts-node-esm src/main.ts",
-    "format-check": "",
-    "lint": "",
+    "format": "prettier --write .",
+    "format-check": "prettier --check .",
+    "lint": "eslint src",
     "start": "node build/main.js",
-    "type-check": "",
+    "type-check": "tsc --noemit",
     "watch": "nodemon --exec ts-node-esm src/main.ts"
   },
   "dependencies": {
