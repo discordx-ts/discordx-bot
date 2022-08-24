@@ -115,7 +115,7 @@ export async function SearchDoc(input: string): Promise<IDocResults[]> {
     .then((res) => res.data)
     .catch(() => null);
 
-  if (!response || !response.results[0]?.hits[0]) {
+  if (!response?.results[0]?.hits[0]) {
     return [];
   }
 

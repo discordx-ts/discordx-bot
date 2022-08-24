@@ -53,7 +53,7 @@ export async function searchMDN(input: string): Promise<IDocResults[]> {
     .then((res) => res.data)
     .catch(() => null);
 
-  if (!response || !response?.documents) {
+  if (!response?.documents) {
     return [];
   }
 
