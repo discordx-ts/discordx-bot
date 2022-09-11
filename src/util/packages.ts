@@ -48,8 +48,7 @@ export const packages = [
     npm: "https://www.npmjs.com/package/@discordx/internal",
   },
   {
-    github:
-      "https://github.com/discordx-ts/discordx/tree/main/packages/koa",
+    github: "https://github.com/discordx-ts/discordx/tree/main/packages/koa",
     name: "@discordx/koa",
     nameShort: "koa",
     npm: "https://www.npmjs.com/package/@discordx/koa",
@@ -62,8 +61,7 @@ export const packages = [
     npm: "https://www.npmjs.com/package/@discordx/lava-player",
   },
   {
-    github:
-      "https://github.com/discordx-ts/discordx/tree/main/packages/music",
+    github: "https://github.com/discordx-ts/discordx/tree/main/packages/music",
     name: "@discordx/music",
     nameShort: "music",
     npm: "https://www.npmjs.com/package/@discordx/music",
