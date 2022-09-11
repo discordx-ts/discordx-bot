@@ -34,7 +34,7 @@ export class Command {
     });
 
     embed.setFooter({
-      text: "Giving us a star on Github will show your support ⭐",
+      text: "You can support discordx by giving it a GitHub star ⭐",
     });
 
     interaction.reply({
