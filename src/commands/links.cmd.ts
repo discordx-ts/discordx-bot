@@ -9,7 +9,7 @@ export class Command {
   @Slash()
   links(interaction: CommandInteraction): void {
     const embed = new EmbedBuilder();
-    embed.setTitle("discord.ts");
+    embed.setTitle("discordx");
     embed.setURL("https://discordx.js.org");
     embed.setDescription(
       "Create a discord bot with TypeScript and Decorators!"
@@ -24,9 +24,8 @@ export class Command {
     embed.addFields({
       name: "GitHub",
       value:
-        "[discord.ts](https://github.com/oceanroleplay/discord.ts) " +
-        "[starter](https://github.com/oceanroleplay/discord.ts-example) " +
-        "[templates](https://github.com/oceanroleplay/discordx-templates)",
+        "[discordx](https://github.com/discordx-ts/discordx) " +
+        "[templates](https://github.com/discordx-ts/templates)",
     });
 
     embed.addFields({

@@ -10,7 +10,7 @@ if (!process.env.HELPER_ROLE_ID) {
 export class Command {
   @Slash({
     description:
-      "Get helper role to receive quick notification for discord.ts changes or help required alert",
+      "Get helper role to receive quick notification for discordx changes or help required alert",
     name: "helper",
   })
   async helper(interaction: CommandInteraction): Promise<void> {
@@ -36,7 +36,7 @@ export class Command {
       await member.roles.add(process.env.HELPER_ROLE_ID);
       await interaction.reply({
         content:
-          "Congratulation, I have assigned you helper role. You will receive quick notification for discord.ts changes or help required alert from other members. Thank you for joining helpers team.",
+          "Congratulation, I have assigned you helper role. You will receive quick notification for discordx changes or help required alert from other members. Thank you for joining helpers team.",
         ephemeral: true,
       });
       await interaction.channel?.send({
