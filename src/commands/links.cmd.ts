@@ -6,7 +6,7 @@ import { packages } from "../util/packages.js";
 
 @Discord()
 export class Command {
-  @Slash()
+  @Slash({ description: "Important links" })
   links(interaction: CommandInteraction): void {
     const embed = new EmbedBuilder();
     embed.setTitle("discordx");

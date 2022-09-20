@@ -6,7 +6,7 @@ import { MDN_BASE_URL, searchMDN } from "../util/search-mdn.js";
 
 @Discord()
 export class Command {
-  @Slash()
+  @Slash({ description: "Search mdn documentation" })
   mdn(
     @SlashOption({
       autocomplete: async (interaction) => {
@@ -14,11 +14,14 @@ export class Command {
         const docs = await searchMDN(String(choice));
         await interaction.respond(docs.slice(0, 24));
       },
+      description: "Enter search query",
       name: "query",
+      required: true,
       type: ApplicationCommandOptionType.String,
     })
     url: string,
     @SlashOption({
+      description: "Mention member",
       name: "mention",
       required: false,
       type: ApplicationCommandOptionType.User,

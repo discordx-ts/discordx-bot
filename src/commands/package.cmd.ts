@@ -6,12 +6,18 @@ import { packages } from "../util/packages.js";
 
 @Discord()
 export class Command {
-  @Slash()
+  @Slash({ description: "Get discordx package information" })
   package(
     @SlashChoice(...packages.map((pkg) => ({ name: pkg.name })))
-    @SlashOption({ name: "package", type: ApplicationCommandOptionType.String })
+    @SlashOption({
+      description: "Select package",
+      name: "package",
+      required: true,
+      type: ApplicationCommandOptionType.String,
+    })
     selection: string,
     @SlashOption({
+      description: "Mention member",
       name: "mention",
       required: false,
       type: ApplicationCommandOptionType.User,

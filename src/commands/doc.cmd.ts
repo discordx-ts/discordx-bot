@@ -6,7 +6,7 @@ import { SearchDoc } from "../util/search-doc.js";
 
 @Discord()
 export class Command {
-  @Slash()
+  @Slash({ description: "Search discordx document" })
   doc(
     @SlashOption({
       autocomplete: async (interaction) => {
@@ -14,11 +14,14 @@ export class Command {
         const docs = await SearchDoc(String(choice));
         await interaction.respond(docs.slice(0, 24));
       },
+      description: "Enter search text",
       name: "query",
+      required: true,
       type: ApplicationCommandOptionType.String,
     })
     url: string,
     @SlashOption({
+      description: "Mention member",
       name: "mention",
       required: false,
       type: ApplicationCommandOptionType.String,
