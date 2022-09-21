@@ -10,6 +10,7 @@ on:
 
 jobs:
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
@@ -46,18 +47,18 @@ jobs:
   alert:
     name: Alert
     if: ${{ always() }}
-    needs: build
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Successful
-        if: ${{ needs.build.status == 'success' }}
+        if: ${{ needs.deploy.result == 'success' }}
         run: |
           curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`bot_discordx\` [deployed](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) successfully :tada:\"}" $DISCORD_WEBHOOK &> /dev/null
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
       - name: Failed
-        if: ${{ needs.build.status != 'success' }}
+        if: ${{ needs.deploy.result != 'success' }}
         run: |
           curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`bot_discordx\` [deployment](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed :x:\"}" $DISCORD_WEBHOOK &> /dev/null
         env:
