@@ -43,8 +43,22 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SCRIPT_PATH: ${{ secrets.SCRIPT_PATH }}
 
-      - name: Alert
+  alert:
+    name: Alert
+    if: ${{ always() }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Successful
+        if: ${{ needs.build.status == 'success' }}
         run: |
           curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`bot_discordx\` [deployed](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) successfully :tada:\"}" $DISCORD_WEBHOOK &> /dev/null
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Failed
+        if: ${{ needs.build.status != 'success' }}
+        run: |
+          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`bot_discordx\` [deployment](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed :x:\"}" $DISCORD_WEBHOOK &> /dev/null
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
