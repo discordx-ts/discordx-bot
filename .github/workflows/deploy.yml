@@ -14,32 +14,37 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: check out code 🛎
+      - name: Check out code 🛎
         uses: actions/checkout@v2
 
-      - name: check out buildx
+      - name: Check out buildx
         uses: docker/setup-buildx-action@v2
         id: buildx
         with:
           install: true
 
-      - name: Build
-        run: docker build --output "type=docker,name=bot_discordx:latest" .
+      - name: Prepare Tag
+        id: tag
+        run: echo "::set-output name=name::bot/discordx:`date +"%y.%m.%d.%H.%M"`"
 
-      - name: Save ssh key
+      - name: Login to Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.REGISTRY_HOST }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ secrets.REGISTRY_HOST }}/${{ steps.tag.outputs.name }}
+
+      - name: Deploy
         run: |
           echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > key.pem
           chmod 400 key.pem
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-
-      - name: Push image
-        run: docker save bot_discordx | ssh -C -oStrictHostKeyChecking=no -i key.pem $SSH_HOST 'sudo docker load' &> /dev/null
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-
-      - name: Run script
-        run: ssh -oStrictHostKeyChecking=no -i key.pem $SSH_HOST $SCRIPT_PATH &> /dev/null
+          ssh -oStrictHostKeyChecking=no -i key.pem $SSH_HOST $SCRIPT_PATH ${{ steps.tag.outputs.name }} &> /dev/null
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SCRIPT_PATH: ${{ secrets.SCRIPT_PATH }}
