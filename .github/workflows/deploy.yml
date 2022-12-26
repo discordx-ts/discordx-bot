@@ -9,23 +9,24 @@ on:
       - completed
 
 jobs:
-  deploy:
-    name: Deploy
+  build:
+    name: Build
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    outputs:
+      version: ${{ steps.prepare-version.outputs.version }}
     steps:
-      - name: Check out code 🛎
-        uses: actions/checkout@v2
+      - name: check out code 🛎
+        uses: actions/checkout@v3
 
-      - name: Check out buildx
+      - name: check out buildx
         uses: docker/setup-buildx-action@v2
         id: buildx
         with:
           install: true
 
-      - name: Prepare Tag
-        id: tag
-        run: echo "::set-output name=name::bot/discordx:`date +"%y.%m.%d.%H.%M"`"
+      - name: Prepare Version
+        id: prepare-version
+        run: echo "version=`date +"%y.%m.%d.%H.%M"`" >> $GITHUB_OUTPUT
 
       - name: Login to Container Registry
         uses: docker/login-action@v2
@@ -38,33 +39,24 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.REGISTRY_HOST }}/${{ steps.tag.outputs.name }}
-
-      - name: Deploy
-        run: |
-          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > key.pem
-          chmod 400 key.pem
-          ssh -oStrictHostKeyChecking=no -i key.pem $SSH_HOST $SCRIPT_PATH ${{ steps.tag.outputs.name }} &> /dev/null
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SCRIPT_PATH: ${{ secrets.SCRIPT_PATH }}
+          tags: ${{ secrets.REGISTRY_HOST }}/${{ secrets.APP_NAME }}:${{ steps.prepare-version.outputs.version }}
 
   alert:
     name: Alert
     if: ${{ always() }}
-    needs: deploy
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Successful
-        if: ${{ needs.deploy.result == 'success' }}
+        if: ${{ needs.build.result == 'success' }}
         run: |
-          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`bot_discordx\` [deployed](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) successfully :tada:\"}" $DISCORD_WEBHOOK &> /dev/null
+          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`${{ secrets.REGISTRY_HOST }}/${{ secrets.APP_NAME }}:${{ needs.build.outputs.version }}\` [deployed](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) successfully :tada:\"}" $DISCORD_WEBHOOK &> /dev/null
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
       - name: Failed
-        if: ${{ needs.deploy.result != 'success' }}
+        if: ${{ needs.build.result != 'success' }}
         run: |
-          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`bot_discordx\` [deployment](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed :x:\"}" $DISCORD_WEBHOOK &> /dev/null
+          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`${{ secrets.REGISTRY_HOST }}/${{ secrets.APP_NAME }}:${{ needs.build.outputs.version }}\` [deployment](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed :x:\"}" $DISCORD_WEBHOOK &> /dev/null
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
