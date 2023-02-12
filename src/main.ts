@@ -1,9 +1,12 @@
-import "reflect-metadata";
-
 import { dirname, importx } from "@discordx/importer";
+import { YTDLPlayerPlugin } from "@discordx/plugin-ytdl-player";
 import type { Interaction, Message } from "discord.js";
 import { IntentsBitField, Partials } from "discord.js";
-import { Client } from "discordx";
+import { Client, MetadataStorage } from "discordx";
+
+const ytdlPlayerPlugin = new YTDLPlayerPlugin({
+  metadata: MetadataStorage.instance,
+});
 
 export const bot = new Client({
   // To only use global commands (use @Guild for specific guild command), comment this line
@@ -25,6 +28,9 @@ export const bot = new Client({
     Partials.Reaction,
     Partials.User,
   ],
+
+  // plugins
+  plugins: [ytdlPlayerPlugin],
 
   // Debug logs are disabled in silent mode
   silent: false,
