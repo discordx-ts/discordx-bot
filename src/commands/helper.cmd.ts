@@ -1,5 +1,5 @@
 import type { CommandInteraction } from "discord.js";
-import { GuildMember } from "discord.js";
+import { ChannelType, GuildMember } from "discord.js";
 import { Discord, Slash } from "discordx";
 
 if (!process.env.HELPER_ROLE_ID) {
@@ -16,7 +16,9 @@ export class Command {
   async helper(interaction: CommandInteraction): Promise<void> {
     if (
       !process.env.HELPER_ROLE_ID ||
-      !(interaction.member instanceof GuildMember)
+      !(interaction.member instanceof GuildMember) ||
+      !interaction.channel ||
+      interaction.channel.type === ChannelType.GuildStageVoice
     ) {
       return;
     }
@@ -39,7 +41,8 @@ export class Command {
           "Congratulation, I have assigned you helper role. You will receive quick notification for discordx changes or help required alert from other members. Thank you for joining helpers team.",
         ephemeral: true,
       });
-      await interaction.channel?.send({
+
+      await interaction.channel.send({
         content: `${interaction.member} has joined <@&${process.env.HELPER_ROLE_ID}>'s group :tada:`,
       });
     }

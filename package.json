@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@discordx/importer": "^1.1.10",
-    "@discordx/plugin-ytdl-player": "^1.1.1",
-    "axios": "^1.3.2",
+    "@discordx/plugin-ytdl-player": "^1.2.0",
+    "axios": "^1.3.3",
     "discord.js": "^14.7.1",
     "discordx": "^11.7.0",
     "lodash": "^4.17.21",
@@ -27,9 +27,9 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
-    "@types/node": "^18.13.0",
-    "@typescript-eslint/eslint-plugin": "^5.51.0",
-    "@typescript-eslint/parser": "^5.51.0",
+    "@types/node": "^18.14.0",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
     "eslint": "^8.34.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-simple-import-sort": "^10.0.0",
