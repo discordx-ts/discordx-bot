@@ -29,9 +29,9 @@ export class Event {
     }
 
     const newTags = new Set<string>();
-    forumResolveTagIds.map((tagId) => newTags.delete(tagId));
     forumOpenTagIds.map((tagId) => newTags.add(tagId));
     thread.appliedTags.map((tagId) => newTags.add(tagId));
+    forumResolveTagIds.map((tagId) => newTags.delete(tagId));
     await thread.setAppliedTags([...newTags]);
 
     await thread.send(
@@ -77,9 +77,9 @@ export class Event {
     );
 
     const newTags = new Set<string>();
-    forumOpenTagIds.map((tagId) => newTags.delete(tagId));
     forumResolveTagIds.map((tagId) => newTags.add(tagId));
     thread.appliedTags.map((tagId) => newTags.add(tagId));
+    forumOpenTagIds.map((tagId) => newTags.delete(tagId));
     await thread.setAppliedTags([...newTags]);
     await thread.setLocked(true, "resolved");
     await thread.setArchived(true, "resolved");
