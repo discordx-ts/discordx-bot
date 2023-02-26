@@ -4,6 +4,8 @@ import type { Interaction, Message } from "discord.js";
 import { IntentsBitField, Partials } from "discord.js";
 import { Client, MetadataStorage } from "discordx";
 
+import env from "./env.js";
+
 const ytdlPlayerPlugin = new YTDLPlayerPlugin({
   metadata: MetadataStorage.instance,
 });
@@ -77,12 +79,7 @@ async function run() {
   await importx(dirname(import.meta.url) + "/{events,commands}/**/*.{ts,js}");
 
   // Let's start the bot
-  if (!process.env.BOT_TOKEN) {
-    throw Error("Could not find BOT_TOKEN in your environment");
-  }
-
-  // Log in with your bot token
-  await bot.login(process.env.BOT_TOKEN);
+  await bot.login(env.BOT_TOKEN);
 }
 
 run();

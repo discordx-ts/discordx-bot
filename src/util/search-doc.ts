@@ -2,9 +2,7 @@ import type { AxiosResponse } from "axios";
 import axios from "axios";
 import _ from "lodash";
 
-if (!process.env.X_Algolia_Api_Key) {
-  throw Error("Algolia api key is not found in environment");
-}
+import env from "../env.js";
 
 interface Hierarchy {
   lvl0: string;
@@ -96,7 +94,7 @@ interface IDocResults {
 export async function SearchDoc(input: string): Promise<IDocResults[]> {
   const response = await axios
     .post<unknown, AxiosResponse<DocResponse>>(
-      "https://c09vvw4qgn-dsn.algolia.net/1/indexes/*/queries",
+      `https://${env.ALGOLIA_APPLICATION_ID}-dsn.algolia.net/1/indexes/*/queries`,
       {
         requests: [
           {
@@ -107,8 +105,8 @@ export async function SearchDoc(input: string): Promise<IDocResults[]> {
       },
       {
         params: {
-          "x-algolia-api-key": process.env.X_Algolia_Api_Key,
-          "x-algolia-application-id": "C09VVW4QGN",
+          "x-algolia-api-key": env.ALGOLIA_API_KEY,
+          "x-algolia-application-id": env.ALGOLIA_APPLICATION_ID,
         },
       }
     )
