@@ -7,6 +7,9 @@ WORKDIR /tmp/app
 # Move package.json
 COPY package.json .
 
+# Install required tools
+RUN apk add python3
+
 # Install dependencies
 RUN npm install
 
