@@ -1,6 +1,9 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json"
+  },
   "plugins": [
     "@typescript-eslint",
     "typescript-sort-keys",
@@ -9,7 +12,7 @@
   ],
   "extends": [
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/strict-type-checked"
   ],
   "ignorePatterns": ["**/*.js"],
   "rules": {

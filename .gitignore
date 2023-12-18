@@ -2,8 +2,6 @@
 .vscode/settings.json
 .env
 .env.local
-package-lock.json
-yarn.lock
 
 # folders
 build

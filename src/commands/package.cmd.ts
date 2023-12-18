@@ -7,7 +7,7 @@ import { packages } from "../util/packages.js";
 @Discord()
 export class Command {
   @Slash({ description: "Get discordx package information" })
-  package(
+  async package(
     @SlashChoice(...packages.map((pkg) => ({ name: pkg.name })))
     @SlashOption({
       description: "Select package",
@@ -23,12 +23,12 @@ export class Command {
       type: ApplicationCommandOptionType.User,
     })
     user: GuildMember | User | undefined,
-    interaction: CommandInteraction
-  ): void {
+    interaction: CommandInteraction,
+  ): Promise<void> {
     const pkg = packages.find((p) => p.name === selection);
 
     if (!pkg) {
-      interaction.reply("❌ unable to found package");
+      await interaction.reply("❌ unable to found package");
       return;
     }
 
@@ -37,10 +37,10 @@ export class Command {
       `**Links**: [GitHub](${pkg.github}) || [NPM](${pkg.npm})\n`;
 
     if (user && user.id != interaction.user.id) {
-      response += `\n${user}, ${interaction.member} requested you to view the mentioned package`;
+      response += `\n${user.toString()}, ${interaction.member?.toString()} requested you to view the mentioned package`;
     }
 
-    interaction.reply({
+    await interaction.reply({
       allowedMentions: {
         parse: [],
         users: user ? [user.id] : [],

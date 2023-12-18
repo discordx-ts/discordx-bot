@@ -57,7 +57,7 @@ export async function searchMDN(input: string): Promise<IDocResults[]> {
     return [];
   }
 
-  const docs = response?.documents;
+  const docs = response.documents;
 
   const results: (IDocResults | undefined)[] = docs.map((doc) => {
     const title = doc.title.slice(0, 99);

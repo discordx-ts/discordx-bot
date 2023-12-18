@@ -15,7 +15,7 @@ export class Event {
   async onCreate([thread]: ArgsOf<Events.ThreadCreate>): Promise<void> {
     const author = await thread.fetchOwner();
     const resolveCommand = thread.client.application.commands.cache.find(
-      (cmd) => cmd.name === "resolved"
+      (cmd) => cmd.name === "resolved",
     );
 
     if (
@@ -35,7 +35,7 @@ export class Event {
     await thread.setAppliedTags([...newTags]);
 
     await thread.send(
-      `Hello <@${author.id}>, once your issue has been resolved, Please close the post with </resolved:${resolveCommand.id}>. Thank you!`
+      `Hello <@${author.id}>, once your issue has been resolved, Please close the post with </resolved:${resolveCommand.id}>. Thank you!`,
     );
   }
 
@@ -73,7 +73,7 @@ export class Event {
     const thread = interaction.channel;
 
     await thread.send(
-      `A resolution has been made and the post has been locked by ${interaction.member}. It can only be reopened by moderators.`
+      `A resolution has been made and the post has been locked by ${interaction.member.toString()}. It can only be reopened by moderators.`,
     );
 
     const newTags = new Set<string>();

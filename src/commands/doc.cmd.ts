@@ -7,7 +7,7 @@ import { SearchDoc } from "../util/search-doc.js";
 @Discord()
 export class Command {
   @Slash({ description: "Search discordx document" })
-  doc(
+  async doc(
     @SlashOption({
       autocomplete: async (interaction) => {
         const choice = interaction.options.getFocused();
@@ -27,13 +27,13 @@ export class Command {
       type: ApplicationCommandOptionType.String,
     })
     user: GuildMember | User | undefined,
-    interaction: CommandInteraction
-  ): void {
+    interaction: CommandInteraction,
+  ): Promise<void> {
     if (user && user.id != interaction.user.id) {
-      url += `\n\n${user}, ${interaction.member} requested you to view the mentioned documentation`;
+      url += `\n\n${user.toString()}, ${interaction.member?.toString()} requested you to view the mentioned documentation`;
     }
 
-    interaction.reply({
+    await interaction.reply({
       allowedMentions: {
         parse: [],
         users: user ? [user.id] : [],

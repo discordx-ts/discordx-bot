@@ -23,7 +23,7 @@ export class Command {
 
     const member = interaction.member;
     const isHasRole = member.roles.cache.find(
-      (role) => role.id === env.HELPER_ROLE_ID
+      (role) => role.id === env.HELPER_ROLE_ID,
     );
 
     if (isHasRole) {
@@ -41,7 +41,9 @@ export class Command {
       });
 
       await interaction.channel.send({
-        content: `${interaction.member} has joined <@&${env.HELPER_ROLE_ID}>'s group :tada:`,
+        content: `${interaction.member.toString()} has joined <@&${
+          env.HELPER_ROLE_ID
+        }>'s group :tada:`,
       });
     }
   }

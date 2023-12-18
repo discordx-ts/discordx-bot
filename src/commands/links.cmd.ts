@@ -7,12 +7,12 @@ import { packages } from "../util/packages.js";
 @Discord()
 export class Command {
   @Slash({ description: "Important links" })
-  links(interaction: CommandInteraction): void {
+  async links(interaction: CommandInteraction): Promise<void> {
     const embed = new EmbedBuilder();
     embed.setTitle("discordx");
     embed.setURL("https://discordx.js.org");
     embed.setDescription(
-      "Create a discord bot with TypeScript and Decorators!"
+      "Create a discord bot with TypeScript and Decorators!",
     );
 
     embed.addFields({
@@ -37,7 +37,7 @@ export class Command {
       text: "You can support discordx by giving it a GitHub star ⭐",
     });
 
-    interaction.reply({
+    await interaction.reply({
       embeds: [embed],
     });
   }

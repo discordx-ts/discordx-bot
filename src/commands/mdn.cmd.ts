@@ -7,7 +7,7 @@ import { MDN_BASE_URL, searchMDN } from "../util/search-mdn.js";
 @Discord()
 export class Command {
   @Slash({ description: "Search mdn documentation" })
-  mdn(
+  async mdn(
     @SlashOption({
       autocomplete: async (interaction) => {
         const choice = interaction.options.getFocused();
@@ -27,12 +27,13 @@ export class Command {
       type: ApplicationCommandOptionType.User,
     })
     user: GuildMember | User | undefined,
-    interaction: CommandInteraction
-  ): void {
+    interaction: CommandInteraction,
+  ): Promise<void> {
     url = MDN_BASE_URL + url;
     if (user && user.id != interaction.user.id) {
-      url += `\n\n${user}, ${interaction.member} requested you to view the mentioned mdn documentation`;
+      url += `\n\n${user.toString()}, ${interaction.member?.toString()} requested you to view the mentioned mdn documentation`;
     }
-    interaction.reply(url);
+
+    await interaction.reply(url);
   }
 }

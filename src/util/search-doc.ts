@@ -108,7 +108,7 @@ export async function SearchDoc(input: string): Promise<IDocResults[]> {
           "x-algolia-api-key": env.ALGOLIA_API_KEY,
           "x-algolia-application-id": env.ALGOLIA_APPLICATION_ID,
         },
-      }
+      },
     )
     .then((res) => res.data)
     .catch(() => null);
@@ -135,7 +135,7 @@ export async function SearchDoc(input: string): Promise<IDocResults[]> {
         name: title,
         value: hit.url,
       };
-    }
+    },
   );
 
   return _.compact(results);
