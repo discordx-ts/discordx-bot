@@ -20,10 +20,10 @@ jobs:
       image_uri: ${{ steps.tag.outputs.current }}
     steps:
       - name: check out code 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@main
 
       - name: check out buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@master
         id: buildx
         with:
           install: true
@@ -35,7 +35,7 @@ jobs:
           echo "latest=${{ env.ECR_REGISTRY }}:latest" >> $GITHUB_OUTPUT
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@main
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -44,10 +44,10 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@main
 
       - name: Build and Push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@master
         with:
           push: true
           tags: ${{ steps.tag.outputs.current }}, ${{ steps.tag.outputs.latest }}
@@ -57,14 +57,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
-          mask-aws-account-id: "no"
-
       - name: deploy to cluster
         uses: kodermax/kubectl-aws-eks@master
         env:
@@ -78,23 +70,3 @@ jobs:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           args: rollout status deployment/${{ env.KUBE_DEPLOYMENT_NAME }} -n ${{ env.KUBE_NAMESPACE }}
-
-  alert:
-    name: Alert
-    if: ${{ always() }}
-    needs: [build, deploy]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Successful
-        if: ${{ needs.build.result == 'success' && needs.deploy.result == 'success' }}
-        run: |
-          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`${{  needs.build.outputs.image_uri }}\` [deployed](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) successfully :tada:\"}" $DISCORD_WEBHOOK &> /dev/null
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-
-      - name: Failed
-        if: ${{ needs.build.result != 'success' || needs.deploy.result != 'success' }}
-        run: |
-          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"\`${{  needs.build.outputs.image_uri }}\` [deployment](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed :x:\"}" $DISCORD_WEBHOOK &> /dev/null
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
