@@ -1,14 +1,11 @@
+import "@discordx/plugin-lava-player";
+
 import { dirname, importx } from "@discordx/importer";
-import { LavaPlayerPlugin } from "@discordx/plugin-lava-player";
 import type { Interaction, Message } from "discord.js";
 import { IntentsBitField, Partials } from "discord.js";
-import { Client, MetadataStorage } from "discordx";
+import { Client } from "discordx";
 
 import env from "./env.js";
-
-const lavaPlayer = new LavaPlayerPlugin({
-  metadata: MetadataStorage.instance,
-});
 
 export const bot = new Client({
   // To only use global commands (use @Guild for specific guild command), comment this line
@@ -30,9 +27,6 @@ export const bot = new Client({
     Partials.Reaction,
     Partials.User,
   ],
-
-  // plugins
-  plugins: [lavaPlayer],
 
   // Debug logs are disabled in silent mode
   silent: false,

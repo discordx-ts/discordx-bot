@@ -1,5 +1,5 @@
-import type { CommandInteraction, GuildMember, User } from "discord.js";
-import { ApplicationCommandOptionType } from "discord.js";
+import type { CommandInteraction, User } from "discord.js";
+import { ApplicationCommandOptionType, GuildMember } from "discord.js";
 import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
 
 import { packages } from "../util/packages.js";
@@ -25,6 +25,10 @@ export class Command {
     user: GuildMember | User | undefined,
     interaction: CommandInteraction,
   ): Promise<void> {
+    if (!(interaction.member instanceof GuildMember)) {
+      return;
+    }
+
     const pkg = packages.find((p) => p.name === selection);
 
     if (!pkg) {
@@ -37,7 +41,7 @@ export class Command {
       `**Links**: [GitHub](${pkg.github}) || [NPM](${pkg.npm})\n`;
 
     if (user && user.id != interaction.user.id) {
-      response += `\n${user.toString()}, ${interaction.member?.toString()} requested you to view the mentioned package`;
+      response += `\n${user.toString()}, ${interaction.member.toString()} requested you to view the mentioned package`;
     }
 
     await interaction.reply({

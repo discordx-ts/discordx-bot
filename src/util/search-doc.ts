@@ -117,18 +117,18 @@ export async function SearchDoc(input: string): Promise<IDocResults[]> {
     return [];
   }
 
-  const results: (IDocResults | undefined)[] = response.results[0]?.hits.map(
+  const results: (IDocResults | null)[] = response.results[0]?.hits.map(
     (hit) => {
       const title =
         `${hit.hierarchy.lvl0}${
           hit.hierarchy.lvl1 ? `#${hit.hierarchy.lvl1}` : ""
         }` +
-        `${hit.hierarchy.lvl2 ? `#${hit.hierarchy.lvl2}` : ""}` +
-        `${hit.hierarchy.lvl3 ? `#${hit.hierarchy.lvl3}` : ""}` +
-        `${hit.hierarchy.lvl4 ? `#${hit.hierarchy.lvl4}` : ""}`.slice(0, 99);
+        (hit.hierarchy.lvl2 ? `#${hit.hierarchy.lvl2}` : "") +
+        (hit.hierarchy.lvl3 ? `#${hit.hierarchy.lvl3}` : "") +
+        (hit.hierarchy.lvl4 ? `#${hit.hierarchy.lvl4}` : "").slice(0, 99);
 
       if (!title.length || !hit.url.length || hit.url.length > 99) {
-        return;
+        return null;
       }
 
       return {

@@ -1,5 +1,5 @@
-import type { CommandInteraction, GuildMember, User } from "discord.js";
-import { ApplicationCommandOptionType } from "discord.js";
+import type { CommandInteraction, User } from "discord.js";
+import { ApplicationCommandOptionType, GuildMember } from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 
 import { SearchDoc } from "../util/search-doc.js";
@@ -29,8 +29,12 @@ export class Command {
     user: GuildMember | User | undefined,
     interaction: CommandInteraction,
   ): Promise<void> {
+    if (!(interaction.member instanceof GuildMember)) {
+      return;
+    }
+
     if (user && user.id != interaction.user.id) {
-      url += `\n\n${user.toString()}, ${interaction.member?.toString()} requested you to view the mentioned documentation`;
+      url += `\n\n${user.toString()}, ${interaction.member.toString()} requested you to view the mentioned documentation`;
     }
 
     await interaction.reply({
