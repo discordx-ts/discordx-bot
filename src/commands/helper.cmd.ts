@@ -1,5 +1,4 @@
-import type { CommandInteraction } from "discord.js";
-import { ChannelType, GuildMember } from "discord.js";
+import { ChannelType, GuildMember, type CommandInteraction } from "discord.js";
 import { Discord, Slash } from "discordx";
 
 import env from "../env.js";
@@ -16,7 +15,8 @@ export class Command {
       !env.HELPER_ROLE_ID ||
       !(interaction.member instanceof GuildMember) ||
       !interaction.channel ||
-      interaction.channel.type === ChannelType.GuildStageVoice
+      interaction.channel.type === ChannelType.GuildStageVoice ||
+      !interaction.channel.isSendable()
     ) {
       return;
     }

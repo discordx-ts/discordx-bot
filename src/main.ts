@@ -1,8 +1,12 @@
 import "@discordx/plugin-lava-player";
 
 import { dirname, importx } from "@discordx/importer";
-import type { Interaction, Message } from "discord.js";
-import { IntentsBitField, Partials } from "discord.js";
+import {
+  IntentsBitField,
+  Partials,
+  type Interaction,
+  type Message,
+} from "discord.js";
 import { Client } from "discordx";
 
 import env from "./env.js";

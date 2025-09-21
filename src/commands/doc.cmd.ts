@@ -1,5 +1,9 @@
-import type { CommandInteraction, User } from "discord.js";
-import { ApplicationCommandOptionType, GuildMember } from "discord.js";
+import {
+  ApplicationCommandOptionType,
+  GuildMember,
+  type CommandInteraction,
+  type User,
+} from "discord.js";
 import { Discord, Slash, SlashOption } from "discordx";
 
 import { SearchDoc } from "../util/search-doc.js";
@@ -11,7 +15,7 @@ export class Command {
     @SlashOption({
       autocomplete: async (interaction) => {
         const choice = interaction.options.getFocused();
-        const docs = await SearchDoc(String(choice));
+        const docs = await SearchDoc(choice);
         await interaction.respond(docs.slice(0, 24));
       },
       description: "Enter search text",

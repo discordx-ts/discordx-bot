@@ -1,5 +1,4 @@
-import type { AxiosResponse } from "axios";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import _ from "lodash";
 
 import env from "../env.js";

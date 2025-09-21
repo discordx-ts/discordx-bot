@@ -1,7 +1,10 @@
-import type { CommandInteraction } from "discord.js";
-import { ChannelType, Events, GuildMember } from "discord.js";
-import type { ArgsOf } from "discordx";
-import { Discord, On, Slash } from "discordx";
+import {
+  ChannelType,
+  Events,
+  GuildMember,
+  type CommandInteraction,
+} from "discord.js";
+import { Discord, On, Slash, type ArgsOf } from "discordx";
 
 import env from "../env.js";
 

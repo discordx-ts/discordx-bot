@@ -1,5 +1,9 @@
-import type { CommandInteraction, User } from "discord.js";
-import { ApplicationCommandOptionType, GuildMember } from "discord.js";
+import {
+  ApplicationCommandOptionType,
+  GuildMember,
+  type CommandInteraction,
+  type User,
+} from "discord.js";
 import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
 
 import { packages } from "../util/packages.js";
