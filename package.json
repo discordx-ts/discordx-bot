@@ -17,10 +17,10 @@
   },
   "dependencies": {
     "@discordx/importer": "^1.3.3",
-    "@discordx/plugin-lava-player": "^2.5.11",
+    "@discordx/plugin-lava-player": "^3.0.0",
     "axios": "^1.12.2",
     "discord.js": "^14.22.1",
-    "discordx": "^11.12.6",
+    "discordx": "^11.13.1",
     "dotenv": "^17.2.2",
     "lodash": "^4.17.21"
   },

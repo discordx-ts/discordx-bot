@@ -1,2 +1,6 @@
+minimumReleaseAgeExclude:
+  - "@discordx/*"
+  - discordx
+
 onlyBuiltDependencies:
   - esbuild
